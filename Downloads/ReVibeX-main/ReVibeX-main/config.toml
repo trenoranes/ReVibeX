@@ -1,0 +1,52 @@
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useApp } from "@/context/AppContext";
+import logo from "@/assets/logo-variant-monogram.png";
+
+export const Route = createFileRoute("/")({
+  component: Index,
+});
+
+function Index() {
+  const navigate = useNavigate();
+  const { hasOnboarded, isAuthed, isGuest } = useApp();
+
+  const handleStart = () => {
+    if (!hasOnboarded) navigate({ to: "/onboarding" });
+    else if (!isAuthed && !isGuest) navigate({ to: "/auth" });
+    else navigate({ to: "/browse" });
+  };
+
+
+  return (
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-hero text-primary-foreground">
+      <div className="absolute -left-24 -top-24 h-96 w-96 rounded-full bg-primary/40 blur-3xl" />
+      <div className="absolute -bottom-32 -right-24 h-96 w-96 rounded-full bg-primary/30 blur-3xl" />
+      <div className="relative z-10 flex flex-col items-center animate-scale-in px-6">
+        <img
+          src={logo}
+          alt="ReVibeX"
+          width={1024}
+          height={1024}
+          className="h-40 w-40 max-w-full rounded-[28%] drop-shadow-[0_8px_30px_rgba(224,64,251,0.5)]"
+        />
+        <h1 className="mt-6 font-display text-5xl font-bold tracking-tight">
+          ReVibe<span className="text-primary">X</span>
+        </h1>
+        <div className="mt-6 flex items-center gap-3 text-center font-sans text-sm font-medium uppercase tracking-[0.35em] not-italic">
+          <span className="motto-word">Rewear</span>
+          <span className="motto-dot h-1.5 w-1.5 rounded-full" />
+          <span className="motto-word">Restyle</span>
+          <span className="motto-dot h-1.5 w-1.5 rounded-full" />
+          <span className="motto-word">Revibe</span>
+        </div>
+        <button
+          onClick={handleStart}
+          className="group relative mt-12 overflow-hidden rounded-full bg-gradient-to-r from-fuchsia-500 via-pink-500 to-violet-500 px-12 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-white shadow-[0_10px_40px_-10px_rgba(224,64,251,0.7)] ring-1 ring-white/20 transition-all hover:shadow-[0_15px_50px_-10px_rgba(224,64,251,0.9)] active:scale-95"
+        >
+          <span className="relative z-10">Get Started</span>
+          <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+        </button>
+      </div>
+    </div>
+  );
+}
